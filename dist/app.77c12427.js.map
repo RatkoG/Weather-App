@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/js/app.js"],"names":["console","log"],"mappings":"AAAAA,OAAO,CAACC,GAAR,CAAY,YAAZ","file":"app.77c12427.js","sourceRoot":"..","sourcesContent":["console.log('JS running');\n"]}
