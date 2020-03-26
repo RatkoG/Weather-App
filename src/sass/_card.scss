@@ -1,0 +1,23 @@
+.main {
+  background: $white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  // TODO: ADD ROW WHEN YOU SEE THE CONTENT
+  grid-template-rows: min-content;
+  width: 100%;
+  height: 25rem;
+  margin-top: 5rem;
+  box-shadow: $box-shadow;
+}
+.weather--icon {
+  width: 12rem;
+  height: 12rem;
+}
+
+.days {
+  margin-top: 5rem;
+  background: $white;
+  width: 100%;
+  box-shadow: $box-shadow;
+  height: 10rem;
+}
