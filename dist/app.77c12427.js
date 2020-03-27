@@ -118,7 +118,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/js/app.js":[function(require,module,exports) {
-console.log('Working...');
+console.log('Working...'); // const api = process.env.API_KEY;
+
+const api = `6d3b43aab36f5d57f9d8671c01cef53c`; // const proxy = `https://cors-anywhere.herokuapp.com/`;
+// const endpoint = `api.openweathermap.org/data/2.5/weather`;
+
+async function fetchWeather(query) {
+  const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${api}`);
+  const data = await response.json();
+  console.log(data);
+  console.log(`Your location is ${data.name} and the weather is ${data.main.temp}`);
+}
+
+fetchWeather('Prilep');
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -147,7 +159,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63402" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63136" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
