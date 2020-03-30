@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="src/sass/main.scss" />
-    <title>Weather App</title>
-  </head>
 
-  <body>
-    <div class="container">
-      <!-- PREPRAJ GO VO BUTTON I VIDI KAKO CHE BIDI -->
-      <div class="format">
-        <span class="active">ºC</span>
-        /
-        <span>ºF</span>
-      </div>
-      <form action="submit" class="search--form">
-        <input type="text" class="search-form--input" />
-        <button type="submit">Add City</button>
-      </form>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/sass/main.scss" />
+  <title>Weather App</title>
+</head>
 
-      <div class="main">
-        <div class="current-location">
+<body>
+  <div class="container">
+    <!-- PREPRAJ GO VO BUTTON I VIDI KAKO CHE BIDI -->
+    <div class="format">
+      <span class="active">ºC</span>
+      /
+      <span>ºF</span>
+    </div>
+    <form action="submit" class="search--form">
+      <input type="text" class="search-form--input" />
+      <button type="submit">Add City</button>
+    </form>
+
+    <div class="main">
+      <!-- <div class="loader">
+        <div class="lds-default">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div> -->
+      <!-- <div class="current-location">
           <?xml version="1.0" encoding="UTF-8"?>
           <svg
             width="64px"
@@ -50,13 +64,13 @@
         <div class="temperature">-40º<span>C</span></div>
         <div class="condition_text">Sunny</div>
         <div class="minmax">min/max</div>
-        <div class="next_days">Next 5 days</div>
-      </div>
-      <!-- <div class="days">
+        <div class="next_days">Next 5 days</div> -->
+    </div>
+    <!-- <div class="days">
 
     </div> -->
-    </div>
-    <!-- <div class="city_list">
+  </div>
+  <!-- <div class="city_list">
     <div class="list">
       <div class="city">Paris</div>
       <div class="main--temperature">-40º</div>
@@ -67,6 +81,7 @@
     </div>
     <div class="clear-list">Clear List</div>
   </div> -->
-    <script src="src/js/app.js"></script>
-  </body>
+  <script src="src/js/app.js"></script>
+</body>
+
 </html>

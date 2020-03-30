@@ -117,21 +117,228 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/js/app.js":[function(require,module,exports) {
-console.log('Working...'); // const api = process.env.API_KEY;
+})({"src/js/Models/Current.js":[function(require,module,exports) {
+"use strict";
 
-const api = `6d3b43aab36f5d57f9d8671c01cef53c`; // const proxy = `https://cors-anywhere.herokuapp.com/`;
-// const endpoint = `api.openweathermap.org/data/2.5/weather`;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
-async function fetchWeather(query) {
-  const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${api}`);
-  const data = await response.json();
-  console.log(data);
-  console.log(`Your location is ${data.name} and the weather is ${data.main.temp}`);
+function getCurrentLocation(options) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, ({
+      code,
+      message
+    }) => reject(Object.assign(new Error(message), {
+      name: 'PositionError',
+      code
+    })), options);
+  });
 }
 
-fetchWeather('Prilep');
-},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+class Current {
+  constructor() {
+    this.coords = [];
+  } // TODO: IF this is called from the controller handle the error over there
+
+
+  async getCoords() {
+    const data = await getCurrentLocation({
+      enableHighAccuracy: true,
+      maximumAge: 0
+    });
+    this.coords = [data.coords.latitude, data.coords.longitude];
+  }
+
+  availableCoords() {
+    return this.coords.length;
+  }
+
+  async getWeather() {
+    const api = "6d3b43aab36f5d57f9d8671c01cef53c";
+    const endpoint = 'http://api.openweathermap.org/data/2.5/weather'; // TODO: Move .catch if you want to catch the error on so other place.  Ex When the function is called
+    // TODO: Remove Units= Metric if you decide to do calculation for C and F
+
+    const response = await fetch(`${endpoint}?lat=${this.coords[0]}&lon=${this.coords[1]}&units=metric&appid=${api}`).catch(handleError);
+    this.results = await response.json();
+    this.name = this.results.name;
+    this.weather = {
+      temp: this.results.main.temp,
+      temp_max: this.results.main.temp_max,
+      temp_min: this.results.main.temp_min,
+      description: this.results.weather[0].main,
+      icon: this.results.weather[0].icon
+    };
+  }
+
+}
+
+exports.default = Current;
+
+function handleError(err) {
+  console.log('Ups... Something went wrong 💩');
+  console.log(err);
+}
+},{}],"src/js/Models/Search.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+class Search {
+  constructor(query) {
+    this.query = query;
+  }
+
+  async getWeather() {
+    const api = "6d3b43aab36f5d57f9d8671c01cef53c";
+    const endpoint = 'http://api.openweathermap.org/data/2.5/weather'; // TODO: Move .catch if you want to catch the error on so other place.  Ex When the function is called
+
+    const response = await fetch(`${endpoint}?q=${this.query}&appid=${api}`).catch(handleError);
+    this.results = await response.json(); // console.log(data);
+    // console.log(`Your location is ${this.name} and the weather is `);
+  }
+
+}
+
+exports.default = Search;
+
+function handleError(err) {
+  console.log('Ups... Something went wrong 💩');
+  console.log(err);
+}
+},{}],"src/js/Views/loaderView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.clearLoader = exports.renderLoader = void 0;
+
+const renderLoader = parent => {
+  const html = `
+	<div class="loader">
+        <div class="lds-default">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+	`;
+  parent.insertAdjacentHTML('afterbegin', html);
+};
+
+exports.renderLoader = renderLoader;
+
+const clearLoader = parent => {
+  const loader = parent.querySelector('.loader');
+  parent.removeChild(loader);
+};
+
+exports.clearLoader = clearLoader;
+},{}],"src/js/Views/currentView.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.renderCurrent = void 0;
+
+const renderCurrent = (result, parent) => {
+  const test = `
+	<div class="current-location">
+	<?xml version="1.0" encoding="UTF-8"?>
+	<svg width="64px" height="90px" viewBox="0 0 64 90" version="1.1" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink">
+		<path
+			d="M31.99994,0 C23.67139,0 15.6839543,3.30849594 9.7947801,9.1976701 C3.90560594,15.0868443 0.59711,23.07428 0.59711,31.40283 C0.59711,51.64417 24.49042,81.92902 30.59393,89.33502 C30.9394271,89.755965 31.4553541,89.999964 31.99993,89.999964 C32.5445059,89.999964 33.0604329,89.755965 33.40593,89.33502 C39.50945,81.92902 63.40276,51.64417 63.40276,31.40283 C63.40276,23.0742818 60.0942654,15.0868475 54.2050934,9.19767364 C48.3159214,3.30849976 40.3284882,0 31.99994,0 Z M31.99994,46.9762 C25.7010813,46.9762 20.0224404,43.1818861 17.6119631,37.362503 C15.2014858,31.5431198 16.5338755,24.8447139 20.9878397,20.3907468 C25.441804,15.9367797 32.140209,14.6043857 37.9595937,17.0148593 C43.7789784,19.4253328 47.5733,25.1039713 47.5733,31.40283 C47.5733,40.003754 40.600864,46.9762 31.99994,46.9762 L31.99994,46.9762 Z"
+			id="Shape" fill="#FF6D6D" fill-rule="nonzero"></path>
+	</svg>Current Location
+</div>
+<div class="condition">
+	<img src="./img/weather/sunny.svg" alt="" class="weather--icon" />
+</div>
+<div class="location">${result.name}</div>
+<div class="temperature">${result.weather.temp}<span>ºC</span></div>
+<div class="condition_text">${result.weather.description}</div>
+<div class="minmax">min ${result.weather.temp_min} ºC / max ${result.weather.temp_max} ºC</div>
+<div class="next_days">Next 5 days</div>
+</div>
+
+	`;
+  parent.insertAdjacentHTML('afterbegin', test);
+};
+
+exports.renderCurrent = renderCurrent;
+},{}],"src/js/app.js":[function(require,module,exports) {
+"use strict";
+
+var _Current = _interopRequireDefault(require("./Models/Current"));
+
+var _Search = _interopRequireDefault(require("./Models/Search"));
+
+var loader = _interopRequireWildcard(require("./Views/loaderView"));
+
+var currentView = _interopRequireWildcard(require("./Views/currentView"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// MODELS
+// VIEWS
+const state = {}; // console.log(state);
+
+const search = new _Search.default('Ajax');
+search.getWeather(); // ---CURRENT LOCATION CONTROLLER---
+
+const currentController = async () => {
+  const parent = document.querySelector('.main');
+  loader.renderLoader(parent);
+  if (!state.current) state.current = new _Current.default();
+
+  if (state.current.availableCoords() < 2) {
+    await state.current.getCoords();
+  } // Get weather for current location
+
+
+  if (state.current.availableCoords() === 2) {
+    await state.current.getWeather();
+    loader.clearLoader(parent);
+    currentView.renderCurrent(state.current, parent);
+  }
+};
+
+currentController(); // ---SEARCH CONTROLLER---
+
+const controlSearch = async e => {
+  e.preventDefault();
+  const query = 'Saskatoon';
+
+  if (query) {
+    state.search = new _Search.default(query);
+    await state.search.getWeather(); // console.log(state.search.results);
+  }
+}; // Add Event Listeners
+
+
+const form = document.querySelector('.search--form');
+form.addEventListener('submit', controlSearch);
+},{"./Models/Current":"src/js/Models/Current.js","./Models/Search":"src/js/Models/Search.js","./Views/loaderView":"src/js/Views/loaderView.js","./Views/currentView":"src/js/Views/currentView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -159,7 +366,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63136" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51454" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
