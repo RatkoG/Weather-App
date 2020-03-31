@@ -7,7 +7,7 @@ import * as loader from './Views/loaderView';
 import * as currentView from './Views/currentView';
 
 const state = {};
-// console.log(state);
+console.log(state);
 
 const search = new Search('Ajax');
 search.getWeather();
@@ -45,3 +45,6 @@ const controlSearch = async e => {
 // Add Event Listeners
 const form = document.querySelector('.search--form');
 form.addEventListener('submit', controlSearch);
+
+// This one is here to make sure to see it when everything is loaded, development purpose
+console.log(state.current);

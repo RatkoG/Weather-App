@@ -257,7 +257,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.renderCurrent = void 0;
 
 const renderCurrent = (result, parent) => {
-  const test = `
+  const html = `
 	<div class="current-location">
 	<?xml version="1.0" encoding="UTF-8"?>
 	<svg width="64px" height="90px" viewBox="0 0 64 90" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -268,7 +268,8 @@ const renderCurrent = (result, parent) => {
 	</svg>Current Location
 </div>
 <div class="condition">
-	<img src="./img/weather/sunny.svg" alt="" class="weather--icon" />
+	<img src="./src/img/weather/13d.png" alt="" class="weather--icon" />
+	image should be here
 </div>
 <div class="location">${result.name}</div>
 <div class="temperature">${result.weather.temp}<span>ºC</span></div>
@@ -278,7 +279,7 @@ const renderCurrent = (result, parent) => {
 </div>
 
 	`;
-  parent.insertAdjacentHTML('afterbegin', test);
+  parent.insertAdjacentHTML('afterbegin', html);
 };
 
 exports.renderCurrent = renderCurrent;
@@ -301,8 +302,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // MODELS
 // VIEWS
-const state = {}; // console.log(state);
-
+const state = {};
+console.log(state);
 const search = new _Search.default('Ajax');
 search.getWeather(); // ---CURRENT LOCATION CONTROLLER---
 
@@ -337,7 +338,9 @@ const controlSearch = async e => {
 
 
 const form = document.querySelector('.search--form');
-form.addEventListener('submit', controlSearch);
+form.addEventListener('submit', controlSearch); // This one is here to make sure to see it when everything is loaded, development purpose
+
+console.log(state.current);
 },{"./Models/Current":"src/js/Models/Current.js","./Models/Search":"src/js/Models/Search.js","./Views/loaderView":"src/js/Views/loaderView.js","./Views/currentView":"src/js/Views/currentView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -366,7 +369,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51454" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61533" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
