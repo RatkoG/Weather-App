@@ -39,9 +39,9 @@ export default class Current {
     this.results = await response.json();
     this.name = this.results.name;
     this.weather = {
-      temp: this.results.main.temp,
-      temp_max: this.results.main.temp_max,
-      temp_min: this.results.main.temp_min,
+      temp: Math.round(this.results.main.temp),
+      temp_max: Math.round(this.results.main.temp_max),
+      temp_min: Math.round(this.results.main.temp_min),
       description: this.results.weather[0].main,
       icon: this.results.weather[0].icon,
     };

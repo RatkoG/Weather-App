@@ -1,5 +1,13 @@
+import photo from '../../img/weather/*.svg';
+
 export const renderCurrent = (result, parent) => {
-  const test = `
+  const allIcons = Object.keys(photo).map((key) => {
+    return [photo[key]];
+  });
+
+  const iconsArray = allIcons.flat();
+  let icon = iconsArray.find((icon) => icon.match(result.weather.icon));
+  const html = `
 	<div class="current-location">
 	<?xml version="1.0" encoding="UTF-8"?>
 	<svg width="64px" height="90px" viewBox="0 0 64 90" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +18,7 @@ export const renderCurrent = (result, parent) => {
 	</svg>Current Location
 </div>
 <div class="condition">
-	<img src="./img/weather/sunny.svg" alt="" class="weather--icon" />
+	<img src="${icon}" alt="" class="weather--icon" />
 </div>
 <div class="location">${result.name}</div>
 <div class="temperature">${result.weather.temp}<span>ºC</span></div>
@@ -20,5 +28,5 @@ export const renderCurrent = (result, parent) => {
 </div>
 
 	`;
-  parent.insertAdjacentHTML('afterbegin', test);
+  parent.insertAdjacentHTML('afterbegin', html);
 };

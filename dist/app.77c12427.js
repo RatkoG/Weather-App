@@ -164,9 +164,9 @@ class Current {
     this.results = await response.json();
     this.name = this.results.name;
     this.weather = {
-      temp: this.results.main.temp,
-      temp_max: this.results.main.temp_max,
-      temp_min: this.results.main.temp_min,
+      temp: Math.round(this.results.main.temp),
+      temp_max: Math.round(this.results.main.temp_max),
+      temp_min: Math.round(this.results.main.temp_min),
       description: this.results.weather[0].main,
       icon: this.results.weather[0].icon
     };
@@ -248,7 +248,64 @@ const clearLoader = parent => {
 };
 
 exports.clearLoader = clearLoader;
-},{}],"src/js/Views/currentView.js":[function(require,module,exports) {
+},{}],"src/img/weather/01d.svg":[function(require,module,exports) {
+module.exports = "/01d.b9bbb2b9.svg";
+},{}],"src/img/weather/01n.svg":[function(require,module,exports) {
+module.exports = "/01n.2290e7c6.svg";
+},{}],"src/img/weather/02d.svg":[function(require,module,exports) {
+module.exports = "/02d.ac486e56.svg";
+},{}],"src/img/weather/02n.svg":[function(require,module,exports) {
+module.exports = "/02n.259589cf.svg";
+},{}],"src/img/weather/03d.svg":[function(require,module,exports) {
+module.exports = "/03d.3b6477cc.svg";
+},{}],"src/img/weather/03n.svg":[function(require,module,exports) {
+module.exports = "/03n.e738d1c9.svg";
+},{}],"src/img/weather/04d.svg":[function(require,module,exports) {
+module.exports = "/04d.ba777544.svg";
+},{}],"src/img/weather/04n.svg":[function(require,module,exports) {
+module.exports = "/04n.b521b8fb.svg";
+},{}],"src/img/weather/09d.svg":[function(require,module,exports) {
+module.exports = "/09d.1c0f43b0.svg";
+},{}],"src/img/weather/09n.svg":[function(require,module,exports) {
+module.exports = "/09n.a9cec1cf.svg";
+},{}],"src/img/weather/10d.svg":[function(require,module,exports) {
+module.exports = "/10d.c34c1c43.svg";
+},{}],"src/img/weather/10n.svg":[function(require,module,exports) {
+module.exports = "/10n.1bf80f05.svg";
+},{}],"src/img/weather/11d.svg":[function(require,module,exports) {
+module.exports = "/11d.ec065761.svg";
+},{}],"src/img/weather/11n.svg":[function(require,module,exports) {
+module.exports = "/11n.548174a6.svg";
+},{}],"src/img/weather/13d.svg":[function(require,module,exports) {
+module.exports = "/13d.32d7ae36.svg";
+},{}],"src/img/weather/13n.svg":[function(require,module,exports) {
+module.exports = "/13n.40dbd931.svg";
+},{}],"src/img/weather/50d.svg":[function(require,module,exports) {
+module.exports = "/50d.f89f5290.svg";
+},{}],"src/img/weather/50n.svg":[function(require,module,exports) {
+module.exports = "/50n.d5bb9ca1.svg";
+},{}],"src/img/weather/*.svg":[function(require,module,exports) {
+module.exports = {
+  "01d": require("./01d.svg"),
+  "01n": require("./01n.svg"),
+  "02d": require("./02d.svg"),
+  "02n": require("./02n.svg"),
+  "03d": require("./03d.svg"),
+  "03n": require("./03n.svg"),
+  "04d": require("./04d.svg"),
+  "04n": require("./04n.svg"),
+  "09d": require("./09d.svg"),
+  "09n": require("./09n.svg"),
+  "10d": require("./10d.svg"),
+  "10n": require("./10n.svg"),
+  "11d": require("./11d.svg"),
+  "11n": require("./11n.svg"),
+  "13d": require("./13d.svg"),
+  "13n": require("./13n.svg"),
+  "50d": require("./50d.svg"),
+  "50n": require("./50n.svg")
+};
+},{"./01d.svg":"src/img/weather/01d.svg","./01n.svg":"src/img/weather/01n.svg","./02d.svg":"src/img/weather/02d.svg","./02n.svg":"src/img/weather/02n.svg","./03d.svg":"src/img/weather/03d.svg","./03n.svg":"src/img/weather/03n.svg","./04d.svg":"src/img/weather/04d.svg","./04n.svg":"src/img/weather/04n.svg","./09d.svg":"src/img/weather/09d.svg","./09n.svg":"src/img/weather/09n.svg","./10d.svg":"src/img/weather/10d.svg","./10n.svg":"src/img/weather/10n.svg","./11d.svg":"src/img/weather/11d.svg","./11n.svg":"src/img/weather/11n.svg","./13d.svg":"src/img/weather/13d.svg","./13n.svg":"src/img/weather/13n.svg","./50d.svg":"src/img/weather/50d.svg","./50n.svg":"src/img/weather/50n.svg"}],"src/js/Views/currentView.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -256,8 +313,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.renderCurrent = void 0;
 
+var _ = _interopRequireDefault(require("../../img/weather/*.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 const renderCurrent = (result, parent) => {
-  const test = `
+  const allIcons = Object.keys(_.default).map(key => {
+    return [_.default[key]];
+  });
+  const iconsArray = allIcons.flat();
+  let icon = iconsArray.find(icon => icon.match(result.weather.icon));
+  const html = `
 	<div class="current-location">
 	<?xml version="1.0" encoding="UTF-8"?>
 	<svg width="64px" height="90px" viewBox="0 0 64 90" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -268,7 +334,7 @@ const renderCurrent = (result, parent) => {
 	</svg>Current Location
 </div>
 <div class="condition">
-	<img src="./img/weather/sunny.svg" alt="" class="weather--icon" />
+	<img src="${icon}" alt="" class="weather--icon" />
 </div>
 <div class="location">${result.name}</div>
 <div class="temperature">${result.weather.temp}<span>ºC</span></div>
@@ -278,11 +344,11 @@ const renderCurrent = (result, parent) => {
 </div>
 
 	`;
-  parent.insertAdjacentHTML('afterbegin', test);
+  parent.insertAdjacentHTML('afterbegin', html);
 };
 
 exports.renderCurrent = renderCurrent;
-},{}],"src/js/app.js":[function(require,module,exports) {
+},{"../../img/weather/*.svg":"src/img/weather/*.svg"}],"src/js/app.js":[function(require,module,exports) {
 "use strict";
 
 var _Current = _interopRequireDefault(require("./Models/Current"));
@@ -337,7 +403,8 @@ const controlSearch = async e => {
 
 
 const form = document.querySelector('.search--form');
-form.addEventListener('submit', controlSearch);
+form.addEventListener('submit', controlSearch); // This one is here to make sure to see it when everything is loaded, development purpose
+// console.log(state.current);
 },{"./Models/Current":"src/js/Models/Current.js","./Models/Search":"src/js/Models/Search.js","./Views/loaderView":"src/js/Views/loaderView.js","./Views/currentView":"src/js/Views/currentView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -366,7 +433,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51454" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55418" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -32,7 +32,7 @@ const currentController = async () => {
 currentController();
 
 // ---SEARCH CONTROLLER---
-const controlSearch = async e => {
+const controlSearch = async (e) => {
   e.preventDefault();
   const query = 'Saskatoon';
   if (query) {
@@ -45,3 +45,6 @@ const controlSearch = async e => {
 // Add Event Listeners
 const form = document.querySelector('.search--form');
 form.addEventListener('submit', controlSearch);
+
+// This one is here to make sure to see it when everything is loaded, development purpose
+// console.log(state.current);
