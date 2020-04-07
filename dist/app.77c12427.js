@@ -198,8 +198,8 @@ class Search {
     const endpoint = 'http://api.openweathermap.org/data/2.5/weather'; // TODO: Move .catch if you want to catch the error on so other place.  Ex When the function is called
 
     const response = await fetch(`${endpoint}?q=${this.query}&appid=${api}`).catch(handleError);
-    this.results = await response.json(); // console.log(data);
-    // console.log(`Your location is ${this.name} and the weather is `);
+    this.results = await response.json();
+    console.log(`Your location is ${this.name} and the weather is `);
   }
 
 }
@@ -397,14 +397,16 @@ const controlSearch = async e => {
 
   if (query) {
     state.search = new _Search.default(query);
-    await state.search.getWeather(); // console.log(state.search.results);
+    await state.search.getWeather();
+    console.log(state.search.results);
   }
 }; // Add Event Listeners
 
 
 const form = document.querySelector('.search--form');
 form.addEventListener('submit', controlSearch); // This one is here to make sure to see it when everything is loaded, development purpose
-// console.log(state.current);
+
+console.log(state.current);
 },{"./Models/Current":"src/js/Models/Current.js","./Models/Search":"src/js/Models/Search.js","./Views/loaderView":"src/js/Views/loaderView.js","./Views/currentView":"src/js/Views/currentView.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -433,7 +435,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55418" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57925" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -11,8 +11,7 @@ export default class Search {
       `${endpoint}?q=${this.query}&appid=${api}`
     ).catch(handleError);
     this.results = await response.json();
-    // console.log(data);
-    // console.log(`Your location is ${this.name} and the weather is `);
+    console.log(`Your location is ${this.name} and the weather is `);
   }
 }
 function handleError(err) {

@@ -38,7 +38,7 @@ const controlSearch = async (e) => {
   if (query) {
     state.search = new Search(query);
     await state.search.getWeather();
-    // console.log(state.search.results);
+    console.log(state.search.results);
   }
 };
 
@@ -47,4 +47,4 @@ const form = document.querySelector('.search--form');
 form.addEventListener('submit', controlSearch);
 
 // This one is here to make sure to see it when everything is loaded, development purpose
-// console.log(state.current);
+console.log(state.current);
