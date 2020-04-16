@@ -9,7 +9,7 @@ import * as searchView from './Views/searchView';
 import { elements } from './Views/base';
 
 const state = {};
-console.log(state);
+// console.log(state);
 
 // const search = new Search('Ajax');
 // search.getWeather();
@@ -42,26 +42,14 @@ const controlSearch = async (e) => {
     state.search = new Search(query);
     searchView.clearInput();
     await state.search.getWeather();
-    searchView.renderResult(state.search.results);
-    console.log(`LOOKING AT`, state.search.results);
+    if (state.search.results.cod === '404') {
+      alert('Please enter valid City');
+    } else {
+      searchView.renderResult(state.search.results);
+    }
   }
-  // console.log(`This is the result Im getting`, state.search.results);
 };
 
 // Add Event Listeners
 const form = elements.searchForm;
 form.addEventListener('submit', controlSearch);
-
-// const form = elements.searchForm;
-// form.addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   controlSearch();
-// });
-
-// This one is here to make sure to see it when everything is loaded, development purpose
-// console.log(state.current);
-
-// function handleError(err) {
-//   console.log('Ups... Something went wrong 💩');
-//   console.log(err);
-// }
